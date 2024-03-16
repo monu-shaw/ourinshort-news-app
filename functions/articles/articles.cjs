@@ -13,8 +13,13 @@ const articleSchema = new mongoose.Schema({
  title: String,
  description: String,
  urlToImage: String,
- publishedAt: Date,
- content: String
+ publishedAt: {
+   type: Date,
+   required: true,
+   default: Date.now,
+ },
+ content: String,
+ category:String
 });
 
 const Article = mongoose.model('Article', articleSchema);
@@ -38,14 +43,14 @@ const connectToDatabase = async () => {
         await connectToDatabase();
         
 
-        const article = await Article.find();
+        const article = await Article.find({}).sort({_id:-1}).limit(150);
 
         // Close the database connection to avoid keeping it open
         
 
        return {
          statusCode: 200,
-         body: JSON.stringify({ status:200, message: 'Updated successfully!', article }),
+         body: JSON.stringify({ status:200, message: 'Updated successfully!', article:article }),
        };
     } catch (error) {
         console.log(error);

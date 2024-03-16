@@ -1,0 +1,21 @@
+{
+    "name": "ourInShort",
+    "short_name": "ourInShort",
+    "description": "A newsapp",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "/vite.jpg",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/vite.jpg",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "standalone"
+}

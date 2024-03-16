@@ -14,10 +14,10 @@ const articleSchema = new mongoose.Schema({
  description: String,
  urlToImage: String,
  publishedAt: {
-   type: Date,
-   required: true,
-   default: Date.now,
- },
+    type: Date,
+    required: true,
+    default: Date.now,
+  },
  content: String,
  category:String
 });
@@ -39,40 +39,36 @@ const connectToDatabase = async () => {
 
 
 const getArticles = async (cat) => {
-    let url = "https://www.indiatoday.in/"+cat;
-    const content = await axios(url).then((re) => {
-       const $ = cheerio.load(re.data);
-       
-       const contentWrapElements = $('.B1S3_content__wrap__9mSB6 h2');
-       const storyShortContElements = $('.B1S3_story__shortcont__inicf p');
-       const pic = $('.thumb.playIconThumbContainer > img');
-       const aHref = $('.B1S3_story__thumbnail___pFy6 > a');
-       let extractedContent = [];
-       contentWrapElements.each((index, element) => {
-           const contentWrap = $(element).text();
-           const storyShortCont = storyShortContElements[index] ? $(storyShortContElements[index]).text() : '';
-           const img = pic[index] ? $(pic[index]).attr('src') : '';
-           const url = aHref[index] ? "https://www.indiatoday.in" + $(aHref[index]).attr('href') : '';
-   
-           extractedContent.push({
-             "source": {
-               "id": null,
-               "name": "msnNOW"
-             },
-             url,
-             "author": 'India Today',
-             "title": contentWrap,
-             "description": storyShortCont,
-             "urlToImage": img,
-             "content": storyShortCont,
-             category:cat
-           });
-       });
-   
-       return extractedContent;
+    let url = "https://www.wionews.com/"+cat;
+ const content = await axios(url).then((re) => {
+    const $ = cheerio.load(re.data);
+    
+    const contentWrapElements = $('.article-list-txt');
+    
+    let extractedContent = [];
+    contentWrapElements.each((index, element) => {
+        const contentWrap = $(element).find("h2 a").text()
+        const storyShortCont = $(element).find("p").first().text()
+        const img = cheerio.load($(element).parent().parent().find("noscript").html())('img').attr('src');
+        const url = "https://www.wionews.com"+$(element).parent().parent().find("a").attr("href");
+
+        extractedContent.push({
+          "source": {
+            "id": null,
+            "name": "WION"
+          },
+          url,
+          "author": 'WION',
+          "title": contentWrap,
+          "description": storyShortCont,
+          "urlToImage": img,
+          "content": storyShortCont,
+          "category":cat
+        });
     });
-   
-    console.log(JSON.stringify(content, null, 2));
+
+    return extractedContent;
+ });
     return content;
    };
    
