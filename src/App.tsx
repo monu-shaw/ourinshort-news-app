@@ -8,10 +8,10 @@ function App():React.ReactNode {
   const [loading, setLoading] = useState(true)
   const [er, setEr] = useState(false)
   useEffect(()=>{
-    axios("/.netlify/functions/articles").then(r=>{
+    axios("/result.json").then(r=>{
       if(r.data.status === 200){
-        setCount(r.data.article)
       }
+      setCount(r.data.article)
       setLoading(false)
     }).catch(err=>{
       console.log(err.message);
@@ -35,6 +35,10 @@ function App():React.ReactNode {
       {count.map((i)=>(
           <ScrollableCard item={i} />
       ))}
+       <button
+        className="fixed z-90 bottom-10 right-8 bg-transparent w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-blue-700 hover:drop-shadow-2xl hover:animate-bounce duration-300">
+         <a href="https://monu-shaw.github.io/portfolio/" target='_blank'><i className="bi bi-github"></i></a> 
+        </button>
     </div>
   )
 }
