@@ -8,10 +8,10 @@ function App():React.ReactNode {
   const [loading, setLoading] = useState(true)
   const [er, setEr] = useState(false)
   useEffect(()=>{
-    axios("/result.json").then(r=>{
+    axios("/.netlify/functions/articles").then(r=>{
       if(r.data.status === 200){
+        setCount(r.data.article)
       }
-      setCount(r.data.article)
       setLoading(false)
     }).catch(err=>{
       console.log(err.message);

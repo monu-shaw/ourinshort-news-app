@@ -43,16 +43,16 @@ const getArticles = async (cat) => {
     const content = await axios(url).then((re) => {
        const $ = cheerio.load(re.data);
        
-       const contentWrapElements = $('.B1S3_content__wrap__9mSB6 h2');
+       const contentWrapElements = $('.B1S3_story__card__A_fhi');
        const storyShortContElements = $('.B1S3_story__shortcont__inicf p');
        const pic = $('.thumb.playIconThumbContainer > img');
        const aHref = $('.B1S3_story__thumbnail___pFy6 > a');
        let extractedContent = [];
        contentWrapElements.each((index, element) => {
-           const contentWrap = $(element).text();
-           const storyShortCont = storyShortContElements[index] ? $(storyShortContElements[index]).text() : '';
-           const img = pic[index] ? $(pic[index]).attr('src') : '';
-           const url = aHref[index] ? "https://www.indiatoday.in" + $(aHref[index]).attr('href') : '';
+           const contentWrap = $(element).find("h2 a").text();
+           const storyShortCont = storyShortContElements[index] ? $(element).find(".B1S3_story__shortcont__inicf p").text() : '';
+           const img = pic[index] ? $(element).find('.thumb img').attr('src') : '';
+           const url = aHref[index] ? "https://www.indiatoday.in" + $(element).find("h2 a").attr("href") : '';
    
            extractedContent.push({
              "source": {
